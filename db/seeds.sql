@@ -12,16 +12,16 @@ VALUES (1, "General", "$500,000"),
        (3, "Pilot", "$"),
        (5, "Accountants", "$"),
        (1, "Pilot", "$"),
-       (5, "General", "$");
+       (5, "Crew", "$");
 
-INSERT INTO employees (first_name, last_name, roles_id)
-VALUES ("Anikin", "Skywalker", 1),
-       ("Obi wan", "Kenobi", 5),
-       ("Fives", "CT-5555", 3),
-       ("Mark", "Hamil", 4),
-       ("Kevin", "Bacon", 5),
-       ("Emperor", "Palpitine", 1),
-       ("The", "Dude", 5);
+INSERT INTO employees (first_name, last_name, roles_id, manager_id)
+VALUES ("Anikin", "Skywalker", 1, null),
+       ("Obi wan", "Kenobi", 5, null),
+       ("Fives", "CT-5555", 3, null),
+       ("Mark", "Hamil", 4, null),
+       ("Kevin", "Bacon", 5, null),
+       ("Emperor", "Palpitine", 1, 1),
+       ("The", "Dude", 5, 2);
 
        UPDATE employees
        SET manager_id = 6
