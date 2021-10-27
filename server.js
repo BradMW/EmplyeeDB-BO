@@ -26,8 +26,11 @@ function init() {
                 choices: [
                     "View Departments",
                     "View Roles",
+                    "View Employees",
                     "Add an Employee",
-                    "Remove Employee"
+                    "Add a Role",
+                    "Add a Department",
+                    "Update an Employee"
                 ]
             }
         ])
@@ -40,11 +43,20 @@ function init() {
                 case "View Roles":
                     viewRoles()
                     break;
+                case "View Employees":
+                    viewEmployees()
+                    break;
                 case "Add an Employee":
                     addEmployee()
                     break;
-                case "Remove Employee":
-                    removeEmployee()
+                case "Add a Role":
+                    addRole()
+                    break;
+                case "Add a Department":
+                    addDepts()
+                    break;
+                case "Update an Employee":
+                    updateEmp()
                     break;
                     default:
                         console.log("all Done!");
@@ -52,9 +64,11 @@ function init() {
         })
 }
 
-const viewDepts = () => {
+const viewDepts = async() => {
     const emp = new db(connection);
-    console.table(emp.viewDepts())
+    const deptAr = await emp.viewDepts();
+    console.table(deptAr);
+    init();
 }
 const viewRoles = async() => {
     const emp = new db(connection);
@@ -62,6 +76,14 @@ const viewRoles = async() => {
     console.table(roleAr);
     init();
 }
+
+const viewEmployees = async() => {
+    const emp = new db(connection);
+    const empAr = await emp.viewEmployees();
+    console.table(empAr);
+    init();
+}
+
 const addEmployee = async () => {
     let answers = await inquirer
         .prompt([
@@ -94,7 +116,7 @@ const addEmployee = async () => {
             {
                 type: 'list',
                 name: 'managerOption',
-                message: 'Who is there manager? Emperor=1, The Dude=2',
+                message: 'Who is their manager? Emperor=1, The Dude=2',
                 choices: [
                     "1",
                     "2"
@@ -109,7 +131,61 @@ const addEmployee = async () => {
         init();
 }
 
+const addRole = async () => {
+    let answers = await inquirer
+        .prompt([
+           
+            {
+                type: 'input',
+                name: 'title',
+                message: 'What is the role?'
+               
+            },
+            {
+                type: 'input',
+                name: 'wage',
+                meassage: 'What is the wage?'
+            },
+            {
+                type: 'list',
+                name: 'department_id',
+                message: 'Which department? Death Star =1, Coruscant=2, Hoth=3, Kashyyyk=4, Star Destroyers=5',
+                choices: [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ]
+            }
+        ])
+        const {department_id, title, wage} = answers;
+        const rle = new db(connection);
+        const roleAns = [title, wage, department_id];
+        console.log(roleAns);
+        await rle.addEmployee(roleAns);
+        init();
+}
 // const removeEmployee = () => {
+
+
+    const addDepts = async () => {
+        let answers = await inquirer
+            .prompt([
+               
+                {
+                    type: 'input',
+                    name: 'department_name',
+                    message: 'What is the Department?'  
+                }
+            ])
+            const {department_name} = answers;
+            const dpts = new db(connection);
+            const dptsAns = [department_name];
+            console.log(dptsAns);
+            await dpts.addEmployee(dptsAns);
+            init();
+    }
 
 
 

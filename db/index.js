@@ -9,10 +9,10 @@ class db {
         return this.connection.query("SELECT * FROM departments;");
     }
     viewRoles() {
-        return this.connection.query("SELECT * FROM roles JOIN departments ON roles.department_id = departments.id;");
+        return this.connection.query("SELECT title, wage, department_id FROM roles JOIN departments ON roles.department_id = departments.id;");
     }
     viewEmployees() {
-        return this.connection.query("SELECT * FROM employees INNER JOIN roles on employees.roles_id = roles.id INNER JOIN departments on roles.department_id = departments.id;");
+        return this.connection.query("SELECT employees.id, employees.first_name, employees.last_name, roles.title, manager.last_name AS manager FROM employees LEFT JOIN roles on employees.roles_id = roles.id LEFT JOIN departments on roles.department_id = departments.id LEFT JOIN employees manager on manager.id = employees.manager_id;");
     }
     // viewManager() {
     //     return this.connection.query("SELECT manager FROM roles;");
@@ -21,14 +21,14 @@ class db {
         return this.connection.query("INSERT INTO employees (first_name, last_name, roles_id, manager_id) VALUES(?, ?, ?, ?);", data);
     }
     addRole(data) {
-        return this.connection.query("INSERT INTO roles (department_id, title, wage) VALUES(?, ?, ?);", data);
+        return this.connection.query("INSERT INTO roles (title, wage, department_id) VALUES(?, ?, ?);", data);
     }
     addDepts(data) {
-        return this.connection.query("INSERT INTO departments")
+        return this.connection.query("INSERT INTO departments (department_name) VALUE (?);", data);
     }
-    updateEmployee(data){
-        return this.connection.query()
-    }
+    // updateEmployee(data){
+    //     return this.connection.query(SET role_id WHERE employees = VALUES)
+    // }
     
 }
 
