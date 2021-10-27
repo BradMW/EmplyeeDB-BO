@@ -1,9 +1,17 @@
 const mysql = require('mysql2');
-const db = require('.');
+const util = require('util');
 
-addEmployee(firstName, LastName, roleOption, managerOption);{
-    db.query(`INSERT INTO employees (first_name, last_name, roles_id, manager_id), SELECT ${firstName}, ${lastName}`)
-console.log('New Employee Added!');
-}
+const connection = mysql.createConnection(
+    {
+      host: 'localhost',
+      user: 'root',
+      password: 'Root1234',
+      database: 'empire_db'
+    },
+    console.log(`Connected to the empire_db database.`)
+  );
+  
+  connection.query = util.promisify(connection.query);
 
-module.exports = Connection;
+
+module.exports = connection;

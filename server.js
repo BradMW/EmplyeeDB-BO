@@ -1,19 +1,19 @@
 const express = require('express');
 const inquirer = require('inquirer');
 const Choice = require('inquirer/lib/objects/choice');
+const connection = require('./db/connection');
 const db = require('./db/index')
 // Import and require mysql2
-// const mysql = require('mysql2');
-
+const mysql = require('mysql2');
 // Connect to database
-const db = mysql.createConnection(
+const server = mysql.createConnection(
   {
     host: 'localhost',
     user: 'root',
     password: 'Root1234',
-    database: 'movies_db'
+    database: 'empire_db'
   },
-  console.log(`Connected to the movies_db database.`)
+  console.log(`Connected to the empire_db database.`)
 );
 
 function init() {
@@ -36,18 +36,34 @@ function init() {
             switch(order){
                 case "View Departments":
                     viewDepts()
+                    break;
+                case "View Roles":
+                    viewRoles()
+                    break;
+                case "Add an Employee":
+                    addEmployee()
+                    break;
+                case "Remove Employee":
+                    removeEmployee()
+                    break;
+                    default:
+                        console.log("all Done!");
             }
         })
 }
 
 const viewDepts = () => {
-    console.table(db.viewDepts())
+    const emp = new db(connection);
+    console.table(emp.viewDepts())
 }
-const viewRoles = () => {
-    console.table(db.viewRoles())
+const viewRoles = async() => {
+    const emp = new db(connection);
+    const roleAr = await emp.viewRoles();
+    console.table(roleAr);
+    init();
 }
-const addEmployee = () => {
-    inquirer
+const addEmployee = async () => {
+    let answers = await inquirer
         .prompt([
             {
             type: 'input',
@@ -77,7 +93,7 @@ const addEmployee = () => {
             },
             {
                 type: 'list',
-                name: 'ManagerOption',
+                name: 'managerOption',
                 message: 'Who is there manager? Emperor=1, The Dude=2',
                 choices: [
                     "1",
@@ -85,9 +101,17 @@ const addEmployee = () => {
                 ]
             }
         ])
-const removeEmployee = () => {
-
+        const {firstName, lastName, roleOption, managerOption} = answers;
+        const emp = new db(connection);
+        const empAns = [firstName, lastName, roleOption, managerOption];
+        console.log(empAns);
+        await emp.addEmployee(empAns);
+        init();
 }
-}
 
+// const removeEmployee = () => {
+
+
+
+// }
 init()
