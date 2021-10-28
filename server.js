@@ -30,7 +30,8 @@ function init() {
                     "Add an Employee",
                     "Add a Role",
                     "Add a Department",
-                    "Update an Employee"
+                    "Update an Employee Role",
+                    "Quit"
                 ]
             }
         ])
@@ -55,10 +56,11 @@ function init() {
                 case "Add a Department":
                     addDepts()
                     break;
-                case "Update an Employee":
-                    updateEmp()
+                case "Update an Employee Role":
+                    updateRole()
                     break;
                     default:
+                        process.exit();
                         console.log("all Done!");
             }
         })
@@ -151,11 +153,11 @@ const addRole = async () => {
                 name: 'department_id',
                 message: 'Which department? Death Star =1, Coruscant=2, Hoth=3, Kashyyyk=4, Star Destroyers=5',
                 choices: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
                 ]
             }
         ])
@@ -163,11 +165,9 @@ const addRole = async () => {
         const rle = new db(connection);
         const roleAns = [title, wage, department_id];
         console.log(roleAns);
-        await rle.addEmployee(roleAns);
+        await rle.addRole(roleAns);
         init();
 }
-// const removeEmployee = () => {
-
 
     const addDepts = async () => {
         let answers = await inquirer
@@ -183,7 +183,38 @@ const addRole = async () => {
             const dpts = new db(connection);
             const dptsAns = [department_name];
             console.log(dptsAns);
-            await dpts.addEmployee(dptsAns);
+            await dpts.addDepts(dptsAns);
+            init();
+    }
+
+    const updateRole = async () => {
+        let answers = await inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'last_name',
+                    message: 'What is the last name of the employee you wish to update?'  
+                },
+                {
+                    type: 'list',
+                    name: 'roles_id',
+                    message: 'General=1, Commander=2, Trooper=3, Pilot=4, Accountant=5, Pilot=6, Crew=7',
+                    choices: [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7"
+                    ]
+                },
+            ])
+            const {roles_id, last_name} = answers;
+            const udpts = new db(connection);
+            const updAns = [roles_id, last_name];
+            console.log(updAns);
+            await udpts.updateRole(updAns);
             init();
     }
 

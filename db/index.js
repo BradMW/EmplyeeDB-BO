@@ -26,9 +26,9 @@ class db {
     addDepts(data) {
         return this.connection.query("INSERT INTO departments (department_name) VALUE (?);", data);
     }
-    // updateEmployee(data){
-    //     return this.connection.query(SET role_id WHERE employees = VALUES)
-    // }
+    updateRole(data){
+        return this.connection.query("UPDATE employees SET roles_id=? WHERE last_name=?;", data)
+    }
     
 }
 

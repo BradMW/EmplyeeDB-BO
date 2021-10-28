@@ -15,7 +15,7 @@ VALUES (1, "General", "$500,000"),
        (5, "Crew", "$");
 
 INSERT INTO employees (first_name, last_name, roles_id, manager_id)
-VALUES ("Anikin", "Skywalker", 1, null),
+VALUES ("Anakin", "Skywalker", 1, null),
        ("Obi wan", "Kenobi", 5, null),
        ("Fives", "CT-5555", 3, null),
        ("Mark", "Hamill", 4, null),
