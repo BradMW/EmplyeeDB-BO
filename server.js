@@ -15,7 +15,7 @@ const server = mysql.createConnection(
   },
   console.log(`Connected to the empire_db database.`)
 );
-
+// pulls up the initial list of options for the user
 function init() {
     inquirer
         .prompt([
@@ -35,6 +35,7 @@ function init() {
                 ]
             }
         ])
+        //checks the option you select and takes you to its prompt
         .then((selection) => {
             let order = selection.menuOption;
             switch(order){
@@ -65,27 +66,28 @@ function init() {
             }
         })
 }
-
+//creates a table to view all departments
 const viewDepts = async() => {
     const emp = new db(connection);
     const deptAr = await emp.viewDepts();
     console.table(deptAr);
     init();
 }
+//creates a table to view all roles
 const viewRoles = async() => {
     const emp = new db(connection);
     const roleAr = await emp.viewRoles();
     console.table(roleAr);
     init();
 }
-
+//creates a table to view all employees
 const viewEmployees = async() => {
     const emp = new db(connection);
     const empAr = await emp.viewEmployees();
     console.table(empAr);
     init();
 }
-
+//promts you with the questions needed to create a new employee
 const addEmployee = async () => {
     let answers = await inquirer
         .prompt([
@@ -125,6 +127,7 @@ const addEmployee = async () => {
                 ]
             }
         ])
+        //captures the answers and turns them into an array 
         const {firstName, lastName, roleOption, managerOption} = answers;
         const emp = new db(connection);
         const empAns = [firstName, lastName, roleOption, managerOption];
@@ -132,7 +135,7 @@ const addEmployee = async () => {
         await emp.addEmployee(empAns);
         init();
 }
-
+//promts you with questions to add a new roll
 const addRole = async () => {
     let answers = await inquirer
         .prompt([
@@ -168,7 +171,7 @@ const addRole = async () => {
         await rle.addRole(roleAns);
         init();
 }
-
+//lets you add a new department
     const addDepts = async () => {
         let answers = await inquirer
             .prompt([
@@ -186,7 +189,7 @@ const addRole = async () => {
             await dpts.addDepts(dptsAns);
             init();
     }
-
+//updates an employees roll
     const updateRole = async () => {
         let answers = await inquirer
             .prompt([
